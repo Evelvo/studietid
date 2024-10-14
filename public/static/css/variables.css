@@ -1,0 +1,30 @@
+:root {
+    --bg-primary: #f5f7fb;
+    --bg-secondary: #ffffff;
+
+
+    --attention-primary: #4182dc;
+
+    --brand-primary: #2a658c;
+
+    --text-color-black: #000000;
+    --text-color-white: #ffffff;
+    --text-color-grey: #5F5F5F;
+
+    --border-color-primary: #d1d1d1;
+
+    --green_bg: #d7f7c2;
+    --green_text: #4e9d4c;
+
+    --red_bg: #f7c2c2;
+    --red_text: #9d4c4c;
+
+    --shadow: 3px 3px 14px #0000000c;
+
+    --border-rad-primary: 8px;
+    --border-rad-secondary: 5px;
+
+
+    --text_font: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --font: "Jost", sans-serif;
+}

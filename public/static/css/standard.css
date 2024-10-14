@@ -1,0 +1,89 @@
+body {
+    margin: 0;
+    background-color: var(--bg-primary);
+    font-family: var(--font);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: rgb(228, 228, 228);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #adadad;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #777777;
+    cursor:default;
+}
+
+
+input,
+textarea,
+button,
+select,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+.sec_main_con {
+    width: 80%;
+    max-width: 1300px;
+}
+
+.main_page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+
+
+.normal_link {
+    margin: 0;
+    color: var(--attention-primary);
+    text-decoration: none;
+    font-weight: 600;
+
+}
+
+.normal_title {
+    margin: 0;
+    font-size: 1.6em;
+    font-weight: 600;
+    color: var(--text-color-black);
+}
+
+.normal_text {
+    margin: 0;
+    font-size: 1em;
+    font-weight: 300;
+    color: var(--text-color-black);
+}
+
+
+
+
+@media screen and (max-width: 600px) {
+    ::-webkit-scrollbar {
+        width: 3px;
+        height: 3px;
+    }
+}

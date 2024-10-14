@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studietid - Logg inn</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="icon" href="../static/rsc/img/studie_logo.png">
+
+    <link rel="stylesheet" href="../../static/css/variables.css">
+    <link rel="stylesheet" href="../../static/css/standard.css">
+    <link rel="stylesheet" href="../../static/css/account/login.css">
+
+    <%- include('../font') %>
+</head>
+<body>
+    <div class = "main_page_login">
+        <div class = "input_container_ext">
+            <div class = "inside_container_padding">
+                <div class = "inside_container">
+                    <div style="height: 20px;"></div>
+                    <div class = "logo_img_con">
+                        <img src="../../static/rsc/img/studie_logo.png" alt="">
+                    </div>
+                    <div style="height: 40px;"></div>
+                    <% if (wrong_login) { %>
+                        <div class = "wrong_login_con">
+                            <div class = "wrong_login_icon_con">
+                                <%- include('../../static/rsc/icons/lock') %>
+                            </div>
+                            <p class = "wrong_login_text">Feil e-post eller passord...</p>
+                        </div>
+                        <div style="height: 20px;"></div>
+                    <% } %>
+                    <form action="/account/login" method="POST">
+                        <div class = "input_field_con">
+                            <input class = "input_field" type="email" id="email" name="email" placeholder="E-post" required>
+                            <div class = "icon_con">
+                                <%- include('../../static/rsc/icons/email') %>
+                            </div>
+                        </div>
+                        <div style="height: 18px;"></div>
+                        <div class = "input_field_con">
+                            <input class = "input_field" type="password" id="password" name="password" placeholder="Passord" required>
+                            <div class = "icon_con">
+                                <%- include('../../static/rsc/icons/password') %>
+                            </div>
+                        </div>
+
+                        <div style="height: 30px;"></div>
+                        <div class = "under_login_con">
+                            <div class = "remember_me_con">
+                                <label for="remember_me" id = "remember_me_label">
+                                    <input type="checkbox" id="remember_me" name="remember_me">Husk meg i 30 dager
+                                </label>
+                            </div>
+                            <div class = "forgot_password_con">
+                                <a href="/account/forgot_password">Glemt passord?</a>
+                            </div>
+                        </div>
+                        <div style="height: 40px;"></div>
+                        <button class = "main_btn" type="submit">Logg inn</button>
+                    </form>
+                    <div style="height: 50px;"></div>
+                    <a class = "go_back" href="/account/register">Har du ikke en bruker?</a>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>

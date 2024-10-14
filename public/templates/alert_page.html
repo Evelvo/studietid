@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studietid - Info</title>
+    <link rel="icon" href="../static/rsc/img/studie_logo.png">
+    <link rel="stylesheet" href="../static/css/alert_page.css">
+    <link rel="stylesheet" href="../static/css/standard.css">
+    <link rel="stylesheet" href="../static/css/variables.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <%- include('font') %>
+
+    <link rel="icon" href="../static/rsc/e_logo_simple.png">
+</head>
+<body>
+    <div class="main_page_login">
+        <div class  = "message_con">
+            <div class = "message_con_padding">
+                <div class = "icon_con">
+                    <%- include('../static/rsc/icons/info') %>
+                </div>
+                <div class = "text_con">
+                    <h1 class = "normal_title"><%= title %></h1>
+                    <div style="height: 13px;"></div>
+                    <p class = "normal_text"><%= msg %></p>
+                    <div style="height: 30px;"></div>
+                    <a class = "msg_title_link normal_link" href="<%= comefrom %>">Gå tilbake</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
