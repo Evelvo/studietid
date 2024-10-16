@@ -6,6 +6,7 @@ const crypto = require('crypto');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const Email = require("../controllers/email");
+const Global_func = require("../controllers/global_functions");
 
 dotenv.config();
 
@@ -45,6 +46,16 @@ router.get('/register',async (req, res) => {
     }
 });
 
+router.post('/register',  async (req, res) => {
+    try {
+        let {name, email, password } = req.body; 
+        let type = "elev"
+        Global_func.add_user_ep(res, type, name, email, password);
+    } catch (error) {
+        Global_func.error_handle_outreach(res, error, "/dashboard");
+    }
+});
+
 
 router.post('/login', async (req, res) => {
     let { email, password, remember_me } = req.body;
@@ -61,6 +72,7 @@ router.post('/login', async (req, res) => {
                     res.redirect('/account/create_password');
                 } else {
                     if (remember_me) {
+                        console.log("fisk")
                         req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000;
                     }
                     let rolling_key = crypto.randomBytes(16).toString('hex');

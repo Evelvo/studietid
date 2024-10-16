@@ -25,23 +25,26 @@ db.once('open', () => {
     console.log('Connected to MongoDB');
 });
 
+app.set('trust proxy', 1);
+
 app.use(session({
     store: MongoStore.create({
         mongoUrl: MONGODB_URI,
         collectionName: 'sessions',
-        ttl: 30 * 24 * 60 * 60, // 30 days
+        ttl: 30 * 24 * 60 * 60, // 30 dager
     }),
     secret: express_secret_key,
-    resave: true,
+    resave: false,
     saveUninitialized: false,
     cookie: { 
-        secure: false,  // Set to true in production with HTTPS
-        maxAge: 72 * 60 * 60 * 1000 // 72 hours
+        secure: process.env.PRODUCTION === "PRODUCTION", 
+        maxAge: 72 * 60 * 60 * 1000, // 72 timer
+        sameSite: 'lax'
     }
 }));
 
-app.use(bodyParser.json());
 
+app.use(bodyParser.json());
 
 async function navbar_data(req, res, next) {
     let pfp_data_var = "none"
