@@ -8,22 +8,51 @@ const bodyParser = require('body-parser');
 
 dotenv.config();
 
-function isAuthenticated(req, res, next) {
+async function isAuthenticated(req, res, next) {
     if (req.session.isUserLoggedIn) {
-        return next();
+        try {
+            const user = await User.findById(req.session.userId);
+            if (user) {
+                return next();
+            } else {
+                res.redirect('/account/login');
+                req.session.isUserLoggedIn = false;
+                req.session.userId = "";
+                req.session.cookie.maxAge = 24 * 60 * 60 * 1000;
+            }
+        } catch {
+            res.redirect('/account/login');
+            req.session.isUserLoggedIn = false;
+            req.session.userId = "";
+            req.session.cookie.maxAge = 24 * 60 * 60 * 1000;
+        }
     } else {
         res.redirect('/account/login');
+        req.session.isUserLoggedIn = false;
+        req.session.userId = "";
+        req.session.cookie.maxAge = 24 * 60 * 60 * 1000;
     }
 }
+
+function findSidebarVersion(userType) {
+    if (userType == "elev") {
+        return "elev_sidebar";
+    } else if (userType == "admin") {
+        return "admin_sidebar";
+    }
+}
+
 
 router.get('/', isAuthenticated, async (req, res) => {
     try {
         const user = await User.findById(req.session.userId);
-        return res.render('alert_page.html', { 
-            title: "Dashboard", 
-            msg: user.type, 
-            comefrom: "/account/login" 
-        });
+        res.render("dashboard/main_dash.html", {
+            windowTitle: "Dashbord - Studietid",
+            userType: user.type,
+            sidebar: findSidebarVersion(user.type),
+            main: "home_dyna"
+
+        })
     } catch (error) {
         console.error(error);
         return res.render('alert_page.html', { 

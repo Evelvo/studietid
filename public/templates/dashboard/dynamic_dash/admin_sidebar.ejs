@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <link rel="stylesheet" href="../../static/css/variables.css">
+    <link rel="stylesheet" href="../../static/css/standard.css">
+    <link rel="stylesheet" href="../../static/css/dashboard/sidebar.css">
+
+    <%- include('../../font') %>
+
+</head>
+<body>
+    <div class = "main_sidebar_con">
+        <div class = "side_bar_padding_con">
+            <div style="height: 20px;"></div>
+            <div class = "links_con">
+                <a id = "home_dyna" class = "link_a" href="/dashboard">
+                    <div class = "link_icon_con">
+                        <%- include('../../../static/rsc/icons/home') %>
+                    </div>
+                    <p class = "small_text">Alle oppgaver</p>
+                </a>
+                <a id = "create_task_dyna" class = "link_a" href="/dashboard/create_task">
+                    <div class = "link_icon_con">
+                        <%- include('../../../static/rsc/icons/add_task') %>
+                    </div>
+                    <p class = "small_text">Legg ut oppgave</p>
+                </a>
+                <a id = "finished_dyna" class = "link_a" href="/">
+                    <div class = "link_icon_con">
+                        <%- include('../../../static/rsc/icons/task') %>
+                    </div>
+                    <p class = "small_text">Fullførte oppgaver</p>
+                </a>
+                <a id = "stats_dyna" class = "link_a" href="/">
+                    <div class = "link_icon_con">
+                        <%- include('../../../static/rsc/icons/stats') %>
+                    </div>
+                    <p class = "small_text">Statestikk</p>
+                </a>
+
+                <p class = "sidebar_small_text">Brukere</p>
+                <a id = "users_dyna" class = "link_a" href="/dashboard/users">
+                    <div class = "link_icon_con">
+                        <%- include('../../../static/rsc/icons/users') %>
+                    </div>
+                    <p class = "small_text">Alle brukere</p>
+                </a>
+                <a id = "create_user_dyna" class = "link_a" href="/dashboard/create_user">
+                    <div class = "link_icon_con">
+                        <%- include('../../../static/rsc/icons/plus_user') %>
+                    </div>
+                    <p class = "small_text">Legg til bruker</p>
+                </a>
+
+                <p class = "sidebar_small_text">Meg</p>
+                <form action="/account/logout" method="POST">
+                    <button id = "logout_btn" class = "link_a" type="submit">
+                        <div class = "link_icon_con">
+                            <%- include('../../../static/rsc/icons/logout') %>
+                        </div>
+                        <p class = "small_text">Logg ut</p>
+                    </button>
+                </form>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</body>
+</html>

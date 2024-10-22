@@ -135,45 +135,41 @@ router.post('/forgot_password_send_email', async (req, res) => {
     try {
         let user = await User.findOne({ email });
         if (user) {
-            if (user.active) {
-                try {
-                    console.log(email);
-                    let rolling_key = crypto.randomBytes(16).toString('hex');
+            try {
+                console.log(email);
+                let rolling_key = crypto.randomBytes(16).toString('hex');
 
-                    user.rolling_key = rolling_key;
+                user.rolling_key = rolling_key;
 
 
-                    await user.save();
+                await user.save();
 
-                    const receiver = user.email;
-                    const subject = 'Glemt passord!';
-                    const templateName = 'title_description_button';
-                    const context = {
-                        title: "Glemt passord",
-                        description: "Trykk på 'Endre passord', og et vindu åpnes hvor du kan oppdatere passordet. Dersom dette ikke er deg trenger du ikke å få panikk, men det betyr at noen prøver å logge inn med e-posten din.",
-                        button_link: HOST+"/account/forgot_password_new?secret_key="+rolling_key,
-                        button_text: "Endre passord"
-                    };
+                const receiver = user.email;
+                const subject = 'Glemt passord!';
+                const templateName = 'title_description_button';
+                const context = {
+                    title: "Glemt passord",
+                    description: "Trykk på 'Endre passord', og et vindu åpnes hvor du kan oppdatere passordet. Dersom dette ikke er deg trenger du ikke å få panikk, men det betyr at noen prøver å logge inn med e-posten din.",
+                    button_link: HOST+"/account/forgot_password_new?secret_key="+rolling_key,
+                    button_text: "Endre passord"
+                };
 
-                    Email.send_email(receiver, subject, templateName, context);
+                Email.send_email(receiver, subject, templateName, context);
 
-                    return res.render('alert_page.html', { 
-                        title: "E-posten er sendt!", 
-                        msg: "Finn endre passord knappen/linken i innboksen.", 
-                        comefrom: "/account/forgot_password" 
-                    });
-                } catch(error) {
-                    console.log(error);
-                    return res.render('alert_page.html', { 
-                        title: "Klarte ikke å sende eposten!", 
-                        msg: "Prøv igjen seinere...", 
-                        comefrom: "/account/forgot_password" 
-                    });
-                }
-                
-            } else {
-                res.redirect('/account/user_deactivated');
+                return res.render('alert_page.html', { 
+                    title: "E-posten er sendt!", 
+                    msg: "Finn endre passord knappen/linken i innboksen.", 
+                    comefrom: "/account/forgot_password" 
+                });
+            } catch(error) {
+                console.log(error);
+                return res.render('alert_page.html', { 
+                    title: "Klarte ikke å sende eposten!", 
+                    msg: "Prøv igjen seinere...", 
+                    comefrom: "/account/forgot_password" 
+                });
             }
+            
         } else {
             res.redirect('/account/forgot_password?que=email_not_exist');
         }

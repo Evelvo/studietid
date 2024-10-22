@@ -1,17 +1,21 @@
 :root {
-    --bg-primary: #f5f7fb;
+    --bg-primary: #f0f0f0;
+    --bg-primary-weak: #f0f0f063;
+
     --bg-secondary: #ffffff;
 
 
-    --attention-primary: #4182dc;
+    --attention-primary: #0483fb;
 
-    --brand-primary: #2a658c;
+    --brand-primary: #32496F;
+    --brand-primary-weak: #cad7ec;
 
     --text-color-black: #000000;
     --text-color-white: #ffffff;
-    --text-color-grey: #5F5F5F;
+    --text-color-grey: #4a4a4a;
 
     --border-color-primary: #d1d1d1;
+    --border-color-focus: #9b9b9b;
 
     --green_bg: #d7f7c2;
     --green_text: #4e9d4c;

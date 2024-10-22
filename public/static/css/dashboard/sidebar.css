@@ -1,0 +1,142 @@
+.main_sidebar_con {
+    width: 100%;
+    height: 100vh;
+    overflow-y: auto;
+    background-color: var(--bg-secondary);
+    border-right: 1px solid var(--border-color-primary);
+
+}
+
+.side_bar_padding_con {
+    padding: 30px;
+}
+
+.top_logo {
+    margin-top: 20px;
+    width: 70px;
+    padding: 7px;
+    padding-bottom: 1px;
+}
+
+.abso_top_title_text {
+    margin: 0;
+    font-size: 0.7em;
+    font-weight: 300;
+    color: var(--text-color-grey);
+    padding: 7px;
+    padding-top: 1px;
+    
+}
+
+.links_con {
+    width: 100%;
+    margin-top: 55px;
+}
+
+.link_a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    margin-bottom: 7px;
+    padding: 8px;
+    border-radius: 5px;
+    transition: background-color ease-in-out 70ms;
+}
+
+#logout_btn {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: unset;
+    font-weight: unset;
+    font-family: var(--font);
+    margin-top: 20px;
+}
+
+#logout_btn svg {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+}
+
+#logout_btn:hover {
+    background-color: var(--bg-primary-weak);
+}
+
+.link_a:hover {
+    background-color: var(--bg-primary-weak);
+}
+
+.link_icon_con {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.link_icon_con > img {
+    width: 21px;
+    height: 21px;
+    object-fit: cover;
+}
+
+.link_icon_con path {
+    stroke: var(--text-color-grey);
+    stroke-width: 2;
+}
+
+.link_icon_con svg {
+    width: 17px;
+    height: 17px;
+}
+
+.special_link_fill_icon svg {
+    fill: var(--text-color-grey);
+}
+
+.sidebar_small_text {
+    font-size: 0.75em;
+    font-weight: 300;
+    color: var(--text-color-grey);
+    margin: 0;
+    margin-top: 40px;
+    padding: 7px;
+    margin-bottom: 9px;
+}
+
+@media screen and (max-width: 900px) {
+    .top_logo {
+        display: none;
+    }
+    
+    .abso_top_title_text {
+        display: none;
+        
+    }
+
+    .side_bar_padding_con {
+        padding: 12px;
+        padding-top: 100px;
+        padding-bottom: 200px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .link_text {
+        font-size: 0.88em;
+    
+    }
+
+    .link_a {
+        margin-bottom: 5px;
+        padding: 8px;
+    }
+
+    .link_icon_con svg {
+        width: 26px;
+        height: 26px;
+    }
+    
+}

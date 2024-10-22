@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= windowTitle %></title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="icon" href="../static/rsc/img/logo_f_white_bg.png">
+
+    <link rel="stylesheet" href="../../static/css/variables.css">
+    <link rel="stylesheet" href="../../static/css/standard.css">
+    <link rel="stylesheet" href="../../static/css/dashboard/main_dash.css">
+
+    <%- include('../font') %>
+</head>
+<body>
+    <div class="main_page_dashboard">
+        <div class="dashboard_grid">
+            <div id="sidebar_con" class="sidebar_con">
+                <p id = "selected_page_variable" style="display: none;"><%= main %></p>
+                <%- include('./dynamic_dash/'+sidebar) %>
+            </div>
+            
+            <div id="main_con" class="main_con">
+                <div class="navbar_con_ext">
+                    <div class="navbar_con">
+                        
+                        <div class="navbar_main_con">
+                            <div class="left_navbar_con">
+                                <button class="navbar_menu_btn">
+                                    <%- include('../../static/rsc/icons/menu_v2') %>
+                                </button>
+                                <div class="navbar_msg_btn_con">
+                                    <a class="navbar_msg_btn" href="/dashboard/messages">
+                                        <span class="navbar_msg_btn_text">Meldinger</span>
+                                        <div class="navbar_msg_btn_icon">
+                                            <%- include('../../static/rsc/icons/message') %>
+                                        </div>
+                                        <p class="navbar_msg_btn_num">9+</p>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="right_navbar_con">
+                                <a id = "settings_dyna" class="navbar_settings_btn" href="/dashboard/settings">
+                                    <%- include('../../static/rsc/icons/settings') %>
+                                </a>
+                                <a class="navbar_profile_pic_btn" href="/dashboard/my_page">
+                                    <% if (pfp_data == "none") { %>
+                                        <img class="navbar_profile_picture" src="../../static/rsc/img/no_profile_picture.png" alt="Task Image">
+                                    <% } else { %>
+                                        <img class="navbar_profile_picture" src="data:image/jpeg;base64, <%= pfp_data %>" alt="Task Image">
+                                    <% } %>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id = "main_inner_con" class = "main_inner_con">
+                    <div class = "main_inner">
+
+                        <div class = "main_inner_container">
+                            <%- include('./dynamic_dash/'+main) %>
+                        </div>
+                        
+                        <div style="height: 140px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let btn_stat = 0;
+
+        let selected_page_variable = document.getElementById("selected_page_variable");
+        selected_page_variable = selected_page_variable.innerText;
+
+        try {
+            let selected_page = document.getElementById(selected_page_variable);
+            selected_page.style.fontWeight = "bold";
+            selected_page.style.backgroundColor = "var(--bg-primary)"
+        } catch {
+            console.log("Kan ikke velge select page");
+        }
+    
+        $(document).ready(function() {
+            $(".navbar_menu_btn").click(function() {
+                let sidebar = document.getElementById("sidebar_con");
+                let main_con = document.getElementById("main_con");
+                let main_inner_con = document.getElementById("main_inner_con");
+
+                if (btn_stat == 0) {
+                    sidebar.style.display = "flex";
+                    main_con.style.width = "0px";
+                    main_inner_con.style.opacity = "0";
+
+
+                    btn_stat = 1;
+                } else {
+                    sidebar.style.display = "none";
+                    main_con.style.width = "100%";
+                    main_inner_con.style.opacity = "1";
+
+
+                    btn_stat = 0;
+                }
+            });
+
+            function handleResize() {
+                let sidebar = document.getElementById("sidebar_con");
+                let main_con = document.getElementById("main_con");
+                let main_inner_con = document.getElementById("main_inner_con");
+
+                if (window.innerWidth > 900) {
+                    sidebar.style.display = "";
+                    main_con.style.width = "";
+                    main_inner_con.style.opacity = "";
+                } else {
+                    if (btn_stat == 1) {
+                        sidebar.style.display = "flex";
+                        main_con.style.width = "0px";
+                        main_inner_con.style.opacity = "0";
+                        
+                    } else {
+                        sidebar.style.display = "none";
+                        main_con.style.width = "100%";
+                        main_inner_con.style.opacity = "1";
+
+                    }
+                }
+            }
+
+            window.addEventListener('resize', handleResize);
+            handleResize();
+        });
+
+    </script>
+    
+</body>
+
