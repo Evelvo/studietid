@@ -35,7 +35,13 @@ router.get('/login',async (req, res) => {
 
 router.get('/register',async (req, res) => {
     try {
-        res.render('account/register.html');
+        const { que } = req.query;
+        let already_exists = false
+
+        if (que == "already_exists") {
+            already_exists = true
+        }
+        res.render('account/register.html', {already_exists});
     } catch (error) {
         console.error(error);
         return res.render('alert_page.html', { 
@@ -50,9 +56,14 @@ router.post('/register',  async (req, res) => {
     try {
         let {name, email, password } = req.body; 
         let type = "elev"
-        Global_func.add_user_ep(res, type, name, email, password);
+        Global_func.add_user_ep(req, res, type, name, email, password);
     } catch (error) {
-        Global_func.error_handle_outreach(res, error, "/dashboard");
+        console.error(error);
+        return res.render('alert_page.html', { 
+            title: "Server error", 
+            msg: "error", 
+            comefrom: "/account/create_password" 
+        });
     }
 });
 

@@ -37,7 +37,7 @@ const upload_image = multer({
     storage: storage,
 });
 
-async function add_user_ep(res, type, name, email, password) {
+async function add_user_ep(req, res, type, name, email, password) {
     let rolling_key = crypto.randomBytes(16).toString('hex');
 
     password = await bcrypt.hash(password, 10);
@@ -47,17 +47,7 @@ async function add_user_ep(res, type, name, email, password) {
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-        res.render("dashboard/main_dash.html", {
-            windowTitle: "Legg til bruker - Frakteren",
-            userType: logged_in_user_type,
-            sidebar: logged_in_sidebar,
-            main: origin_page,
-            popup: true,
-            popup_title: "Finnes allerede!",
-            popup_msg: "En bruker med denne e-posten eksisterer allerede. Det kan være at brukeren tilhører et annet selskap.",
-            users
-
-        })
+        res.redirect('/account/register?que=already_exists');
     } else {
         const user = new User({
             type,
@@ -79,4 +69,4 @@ async function add_user_ep(res, type, name, email, password) {
 }
 
 
-module.exports = { formatDate, upload_image };
+module.exports = { formatDate, upload_image, add_user_ep };

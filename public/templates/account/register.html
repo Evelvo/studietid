@@ -19,6 +19,15 @@
                     <div style="height: 20px;"></div>
                     <h1 class="title_login">Registrer deg</h1>
                     <div style="height: 50px;"></div>
+                    <% if (already_exists) { %>
+                        <div class = "wrong_login_con">
+                            <div class = "wrong_login_icon_con">
+                                <%- include('../../static/rsc/icons/lock') %>
+                            </div>
+                            <p class = "wrong_login_text">En bruker med den mailen finnes allerede.</p>
+                        </div>
+                        <div style="height: 20px;"></div>
+                    <% } %>
                     <form action="" method="POST" onsubmit="return validateForm()">
                         <div class = "input_field_con">
                             <input class = "input_field" type="text" id="name" name="name" placeholder="Navn" required>
