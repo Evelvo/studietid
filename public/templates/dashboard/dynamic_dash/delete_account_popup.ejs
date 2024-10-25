@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <link rel="stylesheet" href="../../../static/css/variables.css">
+    <link rel="stylesheet" href="../../../static/css/standard.css">
+    <link rel="stylesheet" href="../../../static/css/dashboard/delete_account_popup.css">
+
+    <%- include('../../font') %>
+
+</head>
+<body>
+    <div id = "pop_up_delete_account_con" class = "pop_up_delete_account_con">
+        <div class = "pop_up_delete_account">
+            <form action="/dashboard/delete_account" method="POST">
+                <div class = "pop_up_msg_delete_account">
+                    <h3 class = "pop_up_msg_title_delete_account">Slett bruker</h3>
+                    <p class = "small_text">Denne handlingen kan ikke angres, og du må skaffe en ny konto hvis du ønsker å bruke Studietid igjen.</p>
+                    <div style="height: 30px;"></div>
+                    <div class = "input_field_con">
+                        <input class = "input_field" type="password" id="password" name="password" placeholder="Passord" required>
+                        <div class = "icon_con">
+                            <%- include('../../../static/rsc/icons/password') %>
+                        </div>
+                    </div>
+                    <div style="height: 20px;"></div>
+
+                </div>
+                <div class = "pop_up_msg_btn_delete_account_con">
+                    <button class = "popup_delete_account_any_btn" onclick="close_delete_account_popup()" >Avbryt</button>
+                    <button type="submit" id = "popup_delete_account_attention_btn" class = "popup_delete_account_any_btn" >Slett</button>
+                </div>
+            </form>
+        </div>     
+    </div>
+    <script>
+        function open_delete_account_popup() {
+            let pop_up_delete_account_con = document.getElementById("pop_up_delete_account_con");
+            pop_up_delete_account_con.style.display = "flex";
+        }
+
+        function close_delete_account_popup() {
+            let pop_up_delete_account_con = document.getElementById("pop_up_delete_account_con");
+            pop_up_delete_account_con.style.display = "none";
+        }
+
+    </script>
+</body>
+</html>

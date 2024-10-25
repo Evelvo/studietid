@@ -1,0 +1,121 @@
+.pop_up_delete_account_con {
+    position: absolute;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.11);
+    z-index: 998;
+    height: 100%;
+    width: 100%;
+    top: 30px;
+    left: 0;
+    backdrop-filter: blur(3px);
+}
+
+.pop_up_delete_account {
+    width: 95%;
+    max-width: 500px;
+    background-color: var(--bg-secondary);
+    border-radius: 5px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+
+.pop_up_msg_delete_account {
+    padding: 30px;
+    padding-bottom: 50px;
+}
+
+.pop_up_msg_btn_delete_account_con {
+    display: flex;
+    justify-content: right;
+    padding: 17px;
+    padding-right: 30px;
+    padding-left: 30px;
+    background-color: var(--bg-primary-weak);
+}
+
+
+.pop_up_msg_title_delete_account {
+    margin: 0;
+    font-size: 1.2em;
+    font-weight: 500;
+    color: var(--red_text);
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.popup_delete_account_any_btn {
+    font-family: var(--font);
+    font-size: 0.75em;
+    background-color: #e2e2e2;
+    color: var(--text-color-black);
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px;
+    padding-left: 19px;
+    padding-right: 19px;
+}
+
+#popup_delete_account_attention_btn {
+    background-color: #ff2f2f;
+    margin-left: 8px;
+    color: var(--text-color-white);
+}
+
+.input_field_con {
+    position: relative;
+    display: flex;
+}
+
+.input_field {
+    padding: 14px;
+    font-family: var(--font);
+    padding-left: 18px;
+    padding-right: 70px;
+    border: 1px solid var(--border-color-primary);
+    outline: none;
+    border-radius: var(--border-rad-secondary);
+    font-size: 0.88em;
+    font-weight: 600;
+    width: 100%;
+}
+
+.icon_con {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    height: 100%;
+    width: 20px;
+    right: 25px;
+    top: 1px;
+}
+
+.icon_con path {
+    stroke: grey;
+}
+
+.icon_con rect {
+    stroke: grey;
+}
+
+
+@media screen and (max-width: 800px) {
+    .pop_up_msg_delete_account {
+        padding: 18px;
+        padding-bottom: 30px;
+    }
+    
+    .pop_up_msg_btn_delete_account_con {
+        display: flex;
+        justify-content: right;
+        padding: 15px;
+        padding-right: 18px;
+        padding-left: 18px;
+        background-color: var(--bg-primary-weak);
+    }
+
+}

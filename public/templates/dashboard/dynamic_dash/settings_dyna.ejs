@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <link rel="stylesheet" href="../../../static/css/variables.css">
+    <link rel="stylesheet" href="../../../static/css/standard.css">
+    <link rel="stylesheet" href="../../../static/css/dashboard/settings_dyna.css">
+
+    <%- include('../../font') %>
+
+</head>
+<body>
+    <h2 class = "dashboard_title">Instillinger</h2>
+    <div class = "setttings_container_ext">
+        <div class = "settings_item_con">
+            <div class = "settings_item_info_con">
+                <h2 class = "settings_item_title">Logg ut</h2>
+                <p class = "settings_item_desc">Når brukeren velger "Logg ut," vil du bli logget ut av alle aktive Studietid økter på enheten du bruker.</p>
+            </div>
+            <div class = "settings_item_action_con">
+                <div class = "settings_item_action_padding">
+                    <div class = "settings_item_action_center">
+                        <form action="/account/logout" method="POST">
+                            <button id = "settings_logout_btn"  type="submit">
+                                <div class = "settings_login_icon_con">
+                                    <%- include('../../../static/rsc/icons/logout') %>
+                                </div>
+                                <p class = "settings_logout_text">Logg ut</p>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class = "settings_item_divider"></div>
+        <div class = "settings_item_con">
+            <div class = "settings_item_info_con">
+                <h2 class = "settings_item_title">Endre informasjon</h2>
+                <p class = "settings_item_desc">Oppdater navn på brukerkontoen din. Hold informasjonen oppdatert for enkel og effektiv administrasjon.</p>
+            </div>
+            <div class = "settings_item_action_con">
+                <div class = "settings_item_action_padding">
+                    <div class = "settings_item_simple_info_update">
+                        <form action="/dashboard/settings_update_basic_info" method="POST">
+                            <p class = "settings_basic_info_label">Navn</p>
+                            <input class = "settings_basic_info_input_field_style" type="text" id="settings_basic_name" name="settings_basic_name" value="<%= user.name %>" required>
+                            <button class = "settings_basic_info_update_btn" type="submit">Lagre</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class = "settings_item_divider"></div>
+        <div class = "settings_item_con">
+            <div class = "settings_item_info_con">
+                <h2 class = "settings_item_title">Profilbilde</h2>
+                <p class = "settings_item_desc">Oppdater profilbildet ditt for å gi brukerkontoen din et personlig preg. Velg et bilde som representerer deg.</p>
+            </div>
+            <div class = "settings_item_action_con">
+                <div class = "settings_item_action_padding">
+                    <div class = "settings_item_simple_info_update">
+                        <form action="/dashboard/settings_update_profile_pic" method="POST" enctype="multipart/form-data">
+                            
+                            <div class = "profile_pic_label_con">
+                                <img id="userProfilePic" class="add_user_summary_pfp" src="../../../static/rsc/img/no_profile_picture.png" alt=""><br>
+                                <div class = "profile_pic_text_con">
+                                    <h3>Profilbilde</h3>
+                                    <p>Et bilde som representerer brukeren din.</p>
+                                </div>
+                            </div>
+                        
+                            <label id = "image_label" for="image">Trykk her for å laste opp bilde</label> <br>
+                            <input type="file" id="image" name="image" accept="image/*">
+                            <div id="image-upload" class="image-upload">
+                                <p id = "confirmFile">Eller dra inn bilde her.</p>
+                            </div>
+
+                            <button class = "settings_basic_info_update_btn" type="submit">Lagre</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class = "settings_item_divider"></div>
+        <div class = "settings_item_con">
+            <div class = "settings_item_info_con">
+                <h2 class = "settings_item_title">E-post</h2>
+                <p class = "settings_item_desc">Oppdater e-postadressen knyttet til brukerkontoen din. Sørg for at den er oppdatert for å motta viktig informasjon og varsler.</p>
+            </div>
+            <div class = "settings_item_action_con">
+                <div class = "settings_item_action_padding">
+                    <div class = "settings_item_simple_info_update">
+                        <form action="/dashboard/settings_update_email" method="POST">
+                            <p class = "settings_basic_info_label">Endre e-posten din her.</p>
+                            <input class = "settings_basic_info_input_field_style" type="text" id="settings_basic_email" name="settings_basic_email" value="<%= user.email %>" required>
+                            <p class = "settings_basic_info_label">Bekreft din identitet.</p>
+                            <input class = "settings_basic_info_input_field_style" type="password" id="settings_basic_password" name="settings_basic_password" placeholder="Passord" required>
+                            <button class = "settings_basic_info_update_btn" type="submit">Oppdater e-posten</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class = "settings_item_divider"></div>
+        <div class = "settings_item_con">
+            <div class = "settings_item_info_con">
+                <h2 class = "settings_item_title">Passord</h2>
+                <p class = "settings_item_desc">Oppdater passordet ditt. Angi et nytt passord og ditt nåværende passord for å endre det.</p>
+            </div>
+            <div class = "settings_item_action_con">
+                <div class = "settings_item_action_padding">
+                    <div class = "settings_item_simple_info_update">
+                        <form action="/dashboard/settings_update_password" method="POST">
+                            <p class = "settings_basic_info_label">Endre passordet ditt her.</p>
+                            <input class = "settings_basic_info_input_field_style" type="password" id="settings_basic_password_new" name="settings_basic_password_new" placeholder="Nytt passord" required>
+                            <div style="height: 8px;"></div>
+                            <input class = "settings_basic_info_input_field_style" type="password" id="settings_basic_password_new_repeat" name="settings_basic_password_new_repeat" placeholder="Gjenta nytt passord" required>
+                            <div style="height: 20px;"></div>
+                            <div id="password-requirements">
+                                <p id="length-requirement" class="requirement-text">Minst 8 tegn</p>
+                                <p id="number-requirement" class="requirement-text">Inneholder 1 tall</p>
+                            </div>
+                            <p class = "settings_basic_info_label">Bekreft din identitet med nåværende passord.</p>
+                            <input class = "settings_basic_info_input_field_style" type="password" id="settings_basic_password_original" name="settings_basic_password_original" placeholder="Nåværende passord" required>
+                            <button  id="submitBtn" disabled class = "settings_basic_info_update_btn" type="submit">Oppdater passord</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class = "settings_item_divider"></div>
+        <div class = "settings_item_con">
+            <div class = "settings_item_info_con">
+                <h2 id = "settings_delete_title" class = "settings_item_title">Slett bruker</h2>
+                <p class = "settings_item_desc">Fjern kontoen din permanent fra Studietid. Denne handlingen kan ikke angres, og du må skaffe en ny konto hvis du ønsker å bruke Studietid igjen.</p>
+
+            </div>
+            <div class = "settings_item_action_con">
+                <div class = "settings_item_action_padding">
+                    <div class = "settings_item_action_center">
+                        <div style="height: 30px;"></div>
+                        <button onclick="open_delete_account_popup()" id = "settings_delete_user_btn">Slett bruker</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var passwordField = document.getElementById("settings_basic_password_new");
+            var confirmPasswordField = document.getElementById("settings_basic_password_new_repeat");
+            var lengthRequirement = document.getElementById("length-requirement");
+            var numberRequirement = document.getElementById("number-requirement");
+            var submitBtn = document.getElementById("submitBtn");
+
+            // Function to update the state of the "Update Password" button
+            function updateSubmitButtonState() {
+                var password = passwordField.value;
+                var confirmPassword = confirmPasswordField.value;
+
+                var lengthRequirementMet = password.length >= 8;
+                var numberRequirementMet = /\d/.test(password);
+                var passwordsMatch = password === confirmPassword;
+
+                // Toggle CSS classes to show if requirements are met
+                if (lengthRequirementMet) {
+                    lengthRequirement.classList.add("valid");
+                } else {
+                    lengthRequirement.classList.remove("valid");
+                }
+
+                if (numberRequirementMet) {
+                    numberRequirement.classList.add("valid");
+                } else {
+                    numberRequirement.classList.remove("valid");
+                }
+
+                // Enable or disable the submit button based on checks
+                if (lengthRequirementMet && numberRequirementMet && passwordsMatch) {
+                    submitBtn.disabled = false;
+                } else {
+                    submitBtn.disabled = true;
+                }
+            }
+
+            // Event listeners for real-time validation
+            passwordField.addEventListener("input", function () {
+                updateSubmitButtonState();
+            });
+
+            confirmPasswordField.addEventListener("input", function () {
+                var confirmPassword = confirmPasswordField.value;
+                if (confirmPassword === "") {
+                    confirmPasswordField.style.borderColor = "var(--border-color-primary)";
+                } else if (confirmPassword === passwordField.value) {
+                    confirmPasswordField.style.borderColor = "green";
+                } else {
+                    confirmPasswordField.style.borderColor = "red";
+                }
+
+                updateSubmitButtonState();
+            });
+        });
+
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const imageUpload = document.getElementById('image-upload');
+            const fileInput = document.getElementById('image');
+            const confirmFile = document.getElementById("confirmFile");
+            const userProfilePic = document.getElementById('userProfilePic');
+    
+            // Function to handle file selection and update the profile picture
+            const handleFileSelect = function (event) {
+                const files = event.target.files || event.dataTransfer.files;
+                if (files.length > 0) {
+                    const file = files[0];
+                    console.log('Files selected:', file);
+                    confirmFile.innerHTML = file.name;
+    
+                    // Update the profile picture preview
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        userProfilePic.src = e.target.result; // Set the image src to the uploaded file
+                    };
+                    reader.readAsDataURL(file); // Convert the file to a data URL
+                }
+            };
+    
+            // Function to handle drag over
+            const handleDragOver = function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                imageUpload.classList.add('drag-over');
+            };
+    
+            // Function to handle drag leave
+            const handleDragLeave = function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                imageUpload.classList.remove('drag-over');
+            };
+    
+            // Function to handle drop
+            const handleDrop = function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                imageUpload.classList.remove('drag-over');
+    
+                const files = event.dataTransfer.files;
+                if (files.length > 0) {
+                    const file = files[0];
+                    console.log('Files dropped:', file);
+                    confirmFile.innerHTML = file.name;
+    
+                    // Update the profile picture preview
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        userProfilePic.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+    
+                    // Set the file input value to the dropped file
+                    fileInput.files = event.dataTransfer.files;
+                }
+            };
+    
+            // Event listeners for file input
+            fileInput.addEventListener('change', handleFileSelect);
+    
+            // Event listeners for drag and drop
+            imageUpload.addEventListener('dragover', handleDragOver);
+            imageUpload.addEventListener('dragleave', handleDragLeave);
+            imageUpload.addEventListener('drop', handleDrop);
+    
+            // Prevent default behavior for drag and drop
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                imageUpload.addEventListener(eventName, preventDefaults, false);
+                document.body.addEventListener(eventName, preventDefaults, false);
+            });
+    
+            function preventDefaults(event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+        });
+    </script>
+</body>
+</html>
