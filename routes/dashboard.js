@@ -1,6 +1,8 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
+const Subjects = require('../models/subject');
+const Rooms = require('../models/room');
 const router = express.Router();
 const crypto = require('crypto');
 const dotenv = require('dotenv');
@@ -76,6 +78,33 @@ router.get('/register_time', isAuthenticated, async (req, res) => {
             main: "register_time_dyna"
 
         })
+    } catch (error) {
+        console.error(error);
+        return res.render('alert_page.html', { 
+            title: "Server error", 
+            msg: "error", 
+            comefrom: "/account/login" 
+        });
+    }
+});
+
+router.get('/rooms', isAuthenticated, async (req, res) => {
+    try {
+        const user = await User.findById(req.session.userId);
+        if (user.type != "admin") {
+            res.redirect("/dashboard");
+        } else {
+            const rooms = await Rooms.find();
+
+            res.render("dashboard/main_dash.html", {
+                windowTitle: "Oppfør et rom - Studietid",
+                userType: user.type,
+                sidebar: findSidebarVersion(user.type),
+                main: "rooms_dyna",
+                rooms
+
+            })
+        }
     } catch (error) {
         console.error(error);
         return res.render('alert_page.html', { 
