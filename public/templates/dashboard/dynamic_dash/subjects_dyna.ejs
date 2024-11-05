@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" href="../../../static/css/variables.css">
+    <link rel="stylesheet" href="../../../static/css/standard.css">
+    <link rel="stylesheet" href="../../../static/css/dashboard/subjects_dyna.css">
+    <%- include('../../font') %>
+</head>
+<body>
+    <h2 class="dashboard_title">Gyldige fag</h2>
+    <div style="height: 30px;"></div>
+    
+    <div class="subjects_create_con_ext">
+        <form id="addSubjectForm" class="add-subject-form">
+            <input type="text" id="subjectName" placeholder="Skriv inn fagnavn" required>
+            <button type="submit">Legg til</button>
+        </form>
+
+        <div id="messageContainer"></div>
+
+        <div class="subjects-list">
+            <% if (subjects && subjects.length > 0) { %>
+                <% subjects.forEach(function(subject) { %>
+                    <div class="subject-item">
+                        <span class="subject-name"><%= subject.name %></span>
+                        <button class="delete-subject" data-id="<%= subject._id %>">
+                            <%- include('../../../static/rsc/icons/delete') %>
+                        </button>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <p class="normal_text no-subjects">Ingen fag er registrert ennå.</p>
+            <% } %>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('addSubjectForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const subjectName = document.getElementById('subjectName').value.trim();
+                
+                try {
+                    const response = await fetch('/dashboard/add-subject', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ name: subjectName })
+                    });
+                    
+                    const data = await response.json();
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        showMessage(data.message, 'error');
+                    }
+                } catch (error) {
+                    showMessage('Kunne ikke legge til fag', 'error');
+                }
+            });
+
+            document.querySelectorAll('.delete-subject').forEach(button => {
+                button.addEventListener('click', async function() {
+                    const subjectId = this.dataset.id;
+                    
+                    try {
+                        const response = await fetch(`/dashboard/delete-subject/${subjectId}`, {
+                            method: 'DELETE'
+                        });
+                        
+                        const data = await response.json();
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            showMessage(data.message, 'error');
+                        }
+                    } catch (error) {
+                        showMessage('Kunne ikke slette fag', 'error');
+                    }
+                });
+            });
+
+            function showMessage(message, type) {
+                const messageContainer = document.getElementById('messageContainer');
+                messageContainer.innerHTML = `<div class="message ${type}">${message}</div>`;
+                setTimeout(() => messageContainer.innerHTML = '', 3000);
+            }
+        });
+    </script>
+</body>
+</html>

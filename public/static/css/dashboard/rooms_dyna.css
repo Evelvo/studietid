@@ -1,0 +1,139 @@
+.rooms_create_con_ext {
+    background-color: var(--bg-secondary);
+    min-height: 100px;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 700px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.add-room-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.add-room-form input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid var(--border-color-primary);
+    border-radius: var(--border-rad-secondary);
+    font-family: var(--font);
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+.add-room-form input:focus {
+    outline: none;
+    border-color: var(--border-color-focus);
+}
+
+.add-room-form button {
+    padding: 8px 16px;
+    background-color: var(--attention-primary);
+    color: white;
+    border: none;
+    font-family: var(--font);
+    font-size: 0.7em;
+    font-weight: 600;
+    border-radius: var(--border-rad-secondary);
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.add-room-form button:hover {
+    opacity: 0.9;
+}
+
+.room-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color-primary);
+    border-radius: var(--border-rad-secondary);
+    margin-bottom: 8px;
+    box-sizing: border-box;
+}
+
+.delete-room {
+    padding: 6px;
+    background-color: var(--red_bg);
+    color: var(--red_text);
+    border: none;
+    border-radius: var(--border-rad-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+}
+
+.delete-room svg {
+    width: 20px;
+    height: 20px;
+}
+
+.delete-room svg path {
+    stroke: var(--red_text);
+}
+
+.delete-room:hover {
+    opacity: 0.9;
+}
+
+.message {
+    padding: 10px;
+    border-radius: var(--border-rad-secondary);
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+.message.error {
+    background-color: var(--red_bg);
+    color: var(--red_text);
+}
+
+.message.success {
+    background-color: var(--green_bg);
+    color: var(--green_text);
+}
+
+.no-rooms {
+    text-align: center;
+    color: var(--text-color-grey);
+    padding: 20px;
+}
+
+@media screen and (max-width: 1400px) {
+}
+
+@media screen and (max-width: 1000px) {
+}
+
+@media screen and (max-width: 900px) {
+}
+
+@media screen and (max-width: 800px) {
+    .rooms_create_con_ext {
+        padding: 10px;
+        padding-top: 30px;
+        padding-bottom: 30px;
+    }
+
+    .add-room-form {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .add-room-form button {
+        width: 100%;
+        padding: 12px 16px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+}

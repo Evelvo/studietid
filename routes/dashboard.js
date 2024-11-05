@@ -115,6 +115,126 @@ router.get('/rooms', isAuthenticated, async (req, res) => {
     }
 });
 
+router.post('/add-room', isAuthenticated, async (req, res) => {
+    try {
+        const user = await User.findById(req.session.userId);
+        if (user.type !== "admin") {
+            return res.json({ success: false, message: "Unauthorized" });
+        }
+
+        const { name } = req.body;
+        if (!name || !name.trim()) {
+            return res.json({ success: false, message: "Romnavn kan ikke være tomt" });
+        }
+
+        const existingRoom = await Rooms.findOne({ name: name.trim() });
+        if (existingRoom) {
+            return res.json({ success: false, message: "Dette rommet finnes allerede" });
+        }
+
+        const room = new Rooms({ name: name.trim() });
+        await room.save();
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error(error);
+        res.json({ success: false, message: "Serverfeil ved oppretting av rom" });
+    }
+});
+
+router.delete('/delete-room/:id', isAuthenticated, async (req, res) => {
+    try {
+        const user = await User.findById(req.session.userId);
+        if (user.type !== "admin") {
+            return res.json({ success: false, message: "Unauthorized" });
+        }
+
+        const room = await Rooms.findByIdAndDelete(req.params.id);
+        if (!room) {
+            return res.json({ success: false, message: "Rom ikke funnet" });
+        }
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error(error);
+        res.json({ success: false, message: "Serverfeil ved sletting av rom" });
+    }
+});
+
+router.get('/subjects', isAuthenticated, async (req, res) => {
+    try {
+        const user = await User.findById(req.session.userId);
+        if (user.type != "admin") {
+            res.redirect("/dashboard");
+        } else {
+            const subjects = await Subjects.find();
+
+            res.render("dashboard/main_dash.html", {
+                windowTitle: "Oppfør et fag - Studietid",
+                userType: user.type,
+                sidebar: findSidebarVersion(user.type),
+                main: "subjects_dyna",
+                subjects
+            })
+        }
+    } catch (error) {
+        console.error(error);
+        return res.render('alert_page.html', { 
+            title: "Server error", 
+            msg: "error", 
+            comefrom: "/account/login" 
+        });
+    }
+});
+
+router.post('/add-subject', isAuthenticated, async (req, res) => {
+    try {
+        const user = await User.findById(req.session.userId);
+        if (user.type !== "admin") {
+            return res.json({ success: false, message: "Unauthorized" });
+        }
+
+        const { name } = req.body;
+        if (!name || !name.trim()) {
+            return res.json({ success: false, message: "Fagnavn kan ikke være tomt" });
+        }
+
+        // Check if subject already exists
+        const existingSubject = await Subjects.findOne({ name: name.trim() });
+        if (existingSubject) {
+            return res.json({ success: false, message: "Dette faget finnes allerede" });
+        }
+
+        // Create new subject
+        const subject = new Subjects({ name: name.trim() });
+        await subject.save();
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error(error);
+        res.json({ success: false, message: "Serverfeil ved oppretting av fag" });
+    }
+});
+
+router.delete('/delete-subject/:id', isAuthenticated, async (req, res) => {
+    try {
+        const user = await User.findById(req.session.userId);
+        if (user.type !== "admin") {
+            return res.json({ success: false, message: "Unauthorized" });
+        }
+
+        const subject = await Subjects.findByIdAndDelete(req.params.id);
+        if (!subject) {
+            return res.json({ success: false, message: "Fag ikke funnet" });
+        }
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error(error);
+        res.json({ success: false, message: "Serverfeil ved sletting av fag" });
+    }
+});
+
 
 router.get('/settings', isAuthenticated, async (req, res) => {
     try {
@@ -157,7 +277,7 @@ router.post('/delete_account', isAuthenticated, async (req, res) => {
             } else {
                 return res.render('alert_page.html', { 
                     title: "Feil passord!", 
-                    msg: "Kunne ikke slette brukeren din, på grunn av feil passord.", 
+                    msg: "Kunne ikke slette brukeren din, på grunn av feil passord. Prøv igjen.", 
                     comefrom: "/dashboard/settings" 
                 });
             }

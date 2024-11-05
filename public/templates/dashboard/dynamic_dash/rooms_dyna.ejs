@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" href="../../../static/css/variables.css">
+    <link rel="stylesheet" href="../../../static/css/standard.css">
+    <link rel="stylesheet" href="../../../static/css/dashboard/rooms_dyna.css">
+    <%- include('../../font') %>
+</head>
+<body>
+    <h2 class="dashboard_title">Gyldige rom</h2>
+    <div style="height: 30px;"></div>
+    
+    <div class="rooms_create_con_ext">
+        <form id="addRoomForm" class="add-room-form">
+            <input type="text" id="roomName" placeholder="Skriv inn romnavn" required>
+            <button type="submit">Legg til</button>
+        </form>
+
+        <div id="messageContainer"></div>
+
+        <div class="rooms-list">
+            <% if (rooms && rooms.length > 0) { %>
+                <% rooms.forEach(function(room) { %>
+                    <div class="room-item">
+                        <span class="room-name"><%= room.name %></span>
+                        <button class="delete-room" data-id="<%= room._id %>">
+                            <%- include('../../../static/rsc/icons/delete') %>
+                        </button>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <p class="normal_text no-rooms">Ingen rom er registrert ennå.</p>
+            <% } %>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('addRoomForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const roomName = document.getElementById('roomName').value.trim();
+                
+                try {
+                    const response = await fetch('/dashboard/add-room', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ name: roomName })
+                    });
+                    
+                    const data = await response.json();
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        showMessage(data.message, 'error');
+                    }
+                } catch (error) {
+                    showMessage('Kunne ikke legge til rom', 'error');
+                }
+            });
+
+            document.querySelectorAll('.delete-room').forEach(button => {
+                button.addEventListener('click', async function() {
+                    const roomId = this.dataset.id;
+                    
+                    try {
+                        const response = await fetch(`/dashboard/delete-room/${roomId}`, {
+                            method: 'DELETE'
+                        });
+                        
+                        const data = await response.json();
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            showMessage(data.message, 'error');
+                        }
+                    } catch (error) {
+                        showMessage('Kunne ikke slette rom', 'error');
+                    }
+                });
+            });
+
+            function showMessage(message, type) {
+                const messageContainer = document.getElementById('messageContainer');
+                messageContainer.innerHTML = `<div class="message ${type}">${message}</div>`;
+                setTimeout(() => messageContainer.innerHTML = '', 3000);
+            }
+        });
+    </script>
+</body>
+</html>
