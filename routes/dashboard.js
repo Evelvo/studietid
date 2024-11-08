@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 const Subjects = require('../models/subject');
 const Rooms = require('../models/room');
+const Studietid = require('../models/studietid');
 const router = express.Router();
 const crypto = require('crypto');
 const dotenv = require('dotenv');
@@ -71,11 +72,15 @@ router.get('/', isAuthenticated, async (req, res) => {
 router.get('/register_time', isAuthenticated, async (req, res) => {
     try {
         const user = await User.findById(req.session.userId);
+        const rooms = await Rooms.find();
+        const subjects = await Subjects.find();
         res.render("dashboard/main_dash.html", {
             windowTitle: "Registrer en økt - Studietid",
             userType: user.type,
             sidebar: findSidebarVersion(user.type),
-            main: "register_time_dyna"
+            main: "register_time_dyna",
+            subjects,
+            rooms
 
         })
     } catch (error) {
@@ -87,6 +92,33 @@ router.get('/register_time', isAuthenticated, async (req, res) => {
         });
     }
 });
+
+router.post('/register-studietid', isAuthenticated, async (req, res) => {
+    try {
+        const user = await User.findById(req.session.userId);
+        if (user.type !== "elev") {
+            return res.json({ success: false, message: "Kun elever kan registrere studietid" });
+        }
+
+        const { fagId, romId, registreringsdato } = req.body;
+
+        const studietid = new Studietid({
+            status: "aktiv",
+            user_id: user._id,
+            fag_id: fagId,
+            rom_id: romId,
+            registreringsdato: new Date(registreringsdato),
+            kommentar: "none"
+        });
+
+        await studietid.save();
+        res.json({ success: true });
+    } catch (error) {
+        console.error(error);
+        res.json({ success: false, message: "Serverfeil ved registrering av studietid" });
+    }
+});
+
 
 router.get('/rooms', isAuthenticated, async (req, res) => {
     try {
@@ -199,13 +231,11 @@ router.post('/add-subject', isAuthenticated, async (req, res) => {
             return res.json({ success: false, message: "Fagnavn kan ikke være tomt" });
         }
 
-        // Check if subject already exists
         const existingSubject = await Subjects.findOne({ name: name.trim() });
         if (existingSubject) {
             return res.json({ success: false, message: "Dette faget finnes allerede" });
         }
 
-        // Create new subject
         const subject = new Subjects({ name: name.trim() });
         await subject.save();
 

@@ -10,9 +10,65 @@
     <link rel="stylesheet" href="../../../static/css/dashboard/register_time_dyna.css">
 
     <%- include('../../font') %>
-
 </head>
 <body>
-    <h2 class = "dashboard_title">Registrer en økt</h2>
+    <h2 class="dashboard_title">Registrer en økt</h2>
+    <div style="height: 20px;"></div>
+    <div class = "register_time_con_ext">
+    
+        <div class="register-form">
+        <select id="fagSelect" required>
+            <option value="">Velg fag</option>
+            <% subjects.forEach(function(subject) { %>
+                <option value="<%= subject._id %>"><%= subject.name %></option>
+            <% }); %>
+        </select>
+
+        <select id="romSelect" required>
+            <option value="">Velg rom</option>
+            <% rooms.forEach(function(room) { %>
+                <option value="<%= room._id %>"><%= room.name %></option>
+            <% }); %>
+        </select>
+        <div style="height: 30px;"></div>
+        <button onclick="registrerStudietid()">Start økt</button>
+    </div>
+
+    <script>
+
+        async function registrerStudietid() {
+            const fagId = document.getElementById('fagSelect').value;
+            const romId = document.getElementById('romSelect').value;
+
+            if (!fagId || !romId) {
+                alert('Vennligst velg både fag og rom');
+                return;
+            }
+
+            try {
+                const response = await fetch('/dashboard/register-studietid', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        fagId, 
+                        romId,
+                        registreringsdato: new Date().toISOString()
+                    })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    window.location.href = '/dashboard';
+                } else {
+                    alert(result.message || 'Noe gikk galt');
+                }
+            } catch (error) {
+                console.error('Feil ved registrering:', error);
+                alert('En feil oppstod ved registrering av studietid');
+            }
+        }
+    </script>
 </body>
 </html>
