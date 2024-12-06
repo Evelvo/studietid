@@ -1,0 +1,145 @@
+.approve-studietid-container {
+    width: 100%;
+    background-color: var(--bg-secondary);
+    border-radius: var(--border-rad-primary);
+    padding: 20px;
+    box-shadow: var(--shadow);
+}
+
+
+.studietid-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.studietid-item {
+    border: 1px solid var(--border-color-primary);
+    border-radius: var(--border-rad-secondary);
+    padding: 15px;
+    background-color: var(--bg-secondary);
+}
+
+.studietid-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.student-info h3 {
+    margin: 0;
+    font-size: 1.1em;
+    font-weight: 500;
+    color: var(--text-color-black);
+}
+
+.student-info p {
+    margin: 5px 0;
+    font-size: 0.9em;
+    color: var(--text-color-grey);
+}
+
+.timestamp {
+    font-size: 0.85em !important;
+    color: var(--text-color-grey);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-approve, .btn-reject, .btn-comment, .btn-cancel {
+    padding: 8px 12px;
+    border: none;
+    border-radius: var(--border-rad-secondary);
+    font-family: var(--font);
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.btn-approve {
+    background-color: var(--green_bg);
+    color: var(--green_text);
+}
+
+.btn-reject {
+    background-color: var(--red_bg);
+    color: var(--red_text);
+}
+
+.btn-comment {
+    background-color: var(--bg-primary);
+    color: var(--text-color-grey);
+}
+
+.btn-cancel {
+    background-color: var(--bg-primary);
+    color: var(--text-color-grey);
+}
+
+.btn-approve:hover, .btn-reject:hover, .btn-comment:hover, .btn-cancel:hover {
+    opacity: 0.9;
+}
+
+.comment-section {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: var(--bg-primary);
+    border-radius: var(--border-rad-secondary);
+    font-size: 0.9em;
+}
+
+.comment-form {
+    margin-top: 15px;
+    display: none;
+}
+
+.comment-form textarea {
+    width: 100%;
+    height: 80px;
+    padding: 10px;
+    border: 1px solid var(--border-color-primary);
+    border-radius: var(--border-rad-secondary);
+    font-family: var(--font);
+    font-size: 1em;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    resize: none;
+}
+
+.comment-form textarea:focus {
+    outline: none;
+}
+
+.comment-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+@media screen and (max-width: 600px) {
+    .approve-studietid-container {
+        padding: 10px;
+    }
+
+    .studietid-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .action-buttons {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .comment-buttons {
+        flex-direction: column;
+    }
+
+    .btn-approve, .btn-reject, .btn-comment, .btn-cancel {
+        width: 100%;
+    }
+}

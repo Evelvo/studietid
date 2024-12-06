@@ -4,15 +4,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
     <link rel="stylesheet" href="../../../static/css/variables.css">
     <link rel="stylesheet" href="../../../static/css/standard.css">
     <link rel="stylesheet" href="../../../static/css/dashboard/home_dyna.css">
-
     <%- include('../../font') %>
-
 </head>
 <body>
-    <h2 class = "dashboard_title">Hjem</h2>
+    <h2 class="dashboard_title">Hjem</h2>
+    <div style="height: 30px;"></div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-header">
+                <h3>Totale Timer</h3>
+                <%- include('../../../static/rsc/icons/stats') %>
+            </div>
+            <p class="stat-value"><%= totalHours %> timer</p>
+        </div>
+        <div class="stat-card">
+            <div class="stat-header">
+                <h3>Godkjente Økter</h3>
+                <%- include('../../../static/rsc/icons/task') %>
+            </div>
+            <p class="stat-value"><%= approvedSessions %></p>
+        </div>
+        <div class="stat-card">
+            <div class="stat-header">
+                <h3>Ventende Økter</h3>
+                <%- include('../../../static/rsc/icons/home_laptop') %>
+            </div>
+            <p class="stat-value"><%= pendingSessions %></p>
+        </div>
+    </div>
+
+    <div class="sessions-container">
+        <h3 class="sessions-title">Dine Studieøkter</h3>
+        
+        <% if (studySessions && studySessions.length > 0) { %>
+            <div class="sessions-list">
+                <% studySessions.forEach(function(session) { 
+                    let hours = 0;
+                    if (session.ferdigdato) {
+                        const start = new Date(session.registreringsdato);
+                        const end = new Date(session.ferdigdato);
+                        hours = Math.round((end - start) / (1000 * 60 * 60) * 10) / 10;
+                    }
+                %>
+                    <div class="session-item">
+                        <div class="session-header">
+                            <div class="session-info">
+                                <h4><%= session.fag_id.name %></h4>
+                                <p class="room-info"><%= session.rom_id.name %></p>
+                            </div>
+                            <span class="status-badge status-<%= session.status %>">
+                                <%= session.status.charAt(0).toUpperCase() + session.status.slice(1) %>
+                            </span>
+                        </div>
+                        <div class="session-details">
+                            <p>Start: <%= formatDate(session.registreringsdato) %></p>
+                            <% if (session.ferdigdato) { %>
+                                <p>Slutt: <%= formatDate(session.ferdigdato) %></p>
+                                <p>Timer: <%= hours %></p>
+                            <% } %>
+                            <% if (session.kommentar && session.kommentar !== 'none') { %>
+                                <p class="session-comment">Kommentar: <%= session.kommentar %></p>
+                            <% } %>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        <% } else { %>
+            <p class="no-sessions">Ingen studieøkter registrert</p>
+        <% } %>
+    </div>
 </body>
 </html>

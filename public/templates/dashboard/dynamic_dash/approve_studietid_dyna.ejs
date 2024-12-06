@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" href="../../../static/css/variables.css">
+    <link rel="stylesheet" href="../../../static/css/standard.css">
+    <link rel="stylesheet" href="../../../static/css/dashboard/approve_studietid_dyna.css">
+    <%- include('../../font') %>
+</head>
+<body>
+    <h2 class="dashboard_title">Godkjenn studietid</h2>
+    <div style="height: 30px;"></div>
+    
+    <div class="approve-studietid-container">
+
+        <div id="studietidList" class="studietid-list">
+            <% let currentStatus = 'aktiv'; %>
+            <% if (sessionsByStatus[currentStatus].length === 0) { %>
+                <div style="height: 20px;"></div>
+                <p class="normal_text">Ingen aktive studieøkter å vise</p>
+                <div style="height: 20px;"></div>
+            <% } else { %>
+                <% sessionsByStatus[currentStatus].forEach(function(session) { %>
+                    <div class="studietid-item" data-status="<%= session.status %>">
+                    <div class="studietid-header">
+                        <div class="student-info">
+                            <h3><%= session.user_id.name %></h3>
+                            <p><%= session.fag_id.name %> - Rom: <%= session.rom_id.name %></p>
+                            <p class="timestamp">Registrert: <%= new Date(session.registreringsdato).toLocaleString('no-NO', {
+                                year: 'numeric',
+                                month: '2-digit',
+                                day: '2-digit',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            }) %></p>
+                        </div>
+                        <% if (session.status === 'aktiv') { %>
+                            <div class="action-buttons">
+                                <button onclick="showCommentForm('<%= session._id %>')" class="btn-comment">
+                                    Kommenter
+                                </button>
+                                <button onclick="updateStatus('<%= session._id %>', 'godkjent')" class="btn-approve">
+                                    Godkjenn
+                                </button>
+                                <button onclick="updateStatus('<%= session._id %>', 'avvist')" class="btn-reject">
+                                    Avvis
+                                </button>
+                            </div>
+                        <% } %>
+                    </div>
+                    
+                    <% if (session.kommentar && session.kommentar !== 'none') { %>
+                        <div class="comment-section">
+                            <strong>Kommentar:</strong> <%= session.kommentar %>
+                        </div>
+                    <% } %>
+                    
+                    <div id="commentForm-<%= session._id %>" class="comment-form">
+                        <textarea id="comment-<%= session._id %>" placeholder="Skriv en kommentar..."></textarea>
+                        <div class="comment-buttons">
+                            <button onclick="submitWithComment('<%= session._id %>', 'godkjent')" class="btn-approve">
+                                Godkjenn med kommentar
+                            </button>
+                            <button onclick="submitWithComment('<%= session._id %>', 'avvist')" class="btn-reject">
+                                Avvis med kommentar
+                            </button>
+                            <button onclick="hideCommentForm('<%= session._id %>')" class="btn-cancel">
+                                Avbryt
+                            </button>
+                        </div>
+                    </div>
+                    </div>
+                <% }); %>
+            <% } %>
+        </div>
+    </div>
+
+    <script>
+        function showCommentForm(sessionId) {
+            document.getElementById(`commentForm-${sessionId}`).style.display = 'block';
+        }
+
+        function hideCommentForm(sessionId) {
+            document.getElementById(`commentForm-${sessionId}`).style.display = 'none';
+        }
+
+        function updateStatus(sessionId, status) {
+            $.ajax({
+                url: '/dashboard/update-study-session',
+                method: 'POST',
+                data: JSON.stringify({
+                    sessionId: sessionId,
+                    status: status,
+                    comment: 'none'
+                }),
+                contentType: 'application/json',
+                success: function(response) {
+                    if (response.success) {
+                        window.location.reload();
+                    } else {
+                        alert('Kunne ikke oppdatere status: ' + response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error updating status:', error);
+                    alert('En feil oppstod ved oppdatering av status');
+                }
+            });
+        }
+
+        function submitWithComment(sessionId, status) {
+            const comment = document.getElementById(`comment-${sessionId}`).value.trim();
+            if (!comment) {
+                alert('Vennligst skriv en kommentar');
+                return;
+            }
+
+            $.ajax({
+                url: '/dashboard/update-study-session',
+                method: 'POST',
+                data: JSON.stringify({
+                    sessionId: sessionId,
+                    status: status,
+                    comment: comment
+                }),
+                contentType: 'application/json',
+                success: function(response) {
+                    if (response.success) {
+                        window.location.reload();
+                    } else {
+                        alert('Kunne ikke oppdatere status: ' + response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error updating status:', error);
+                    alert('En feil oppstod ved oppdatering av status');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,25 +1,151 @@
-
-
-
-
-
-
-@media screen and (max-width: 1400px) {
-
-
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
 }
 
-@media screen and (max-width: 1000px) {
-
+.stat-card {
+    background-color: var(--bg-secondary);
+    padding: 20px;
+    border-radius: var(--border-rad-secondary);
+    box-shadow: var(--shadow);
 }
 
-@media screen and (max-width: 900px) {
+.stat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
 
+.stat-header h3 {
+    margin: 0;
+    font-size: 0.9em;
+    color: var(--text-color-grey);
+    font-weight: 400;
+}
+
+.stat-header svg {
+    width: 20px;
+    height: 20px;
+    opacity: 0.7;
+}
+
+.stat-value {
+    margin: 0;
+    font-size: 1.8em;
+    font-weight: 600;
+    color: var(--text-color-black);
+}
+
+.sessions-container {
+    background-color: var(--bg-secondary);
+    border-radius: var(--border-rad-secondary);
+    padding: 20px;
+    box-shadow: var(--shadow);
+}
+
+.sessions-title {
+    margin: 0;
+    margin-bottom: 20px;
+    font-size: 1.1em;
+    font-weight: 500;
+    color: var(--text-color-black);
+}
+
+.sessions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.session-item {
+    border: 1px solid var(--border-color-primary);
+    border-radius: var(--border-rad-secondary);
+    padding: 15px;
+}
+
+.session-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.session-info h4 {
+    margin: 0;
+    font-size: 1em;
+    font-weight: 500;
+    color: var(--text-color-black);
+}
+
+.room-info {
+    margin: 5px 0 0 0;
+    font-size: 0.85em;
+    color: var(--text-color-grey);
+}
+
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: 500;
+}
+
+.status-godkjent {
+    background-color: var(--green_bg);
+    color: var(--green_text);
+}
+
+.status-avvist {
+    background-color: var(--red_bg);
+    color: var(--red_text);
+}
+
+.status-aktiv {
+    background-color: #FEF3C7;
+    color: #92400E;
+}
+
+.session-details {
+    font-size: 0.85em;
+    color: var(--text-color-grey);
+}
+
+.session-details p {
+    margin: 5px 0;
+}
+
+.session-comment {
+    margin-top: 10px !important;
+    padding: 8px;
+    background-color: var(--bg-primary);
+    border-radius: var(--border-rad-secondary);
+}
+
+.no-sessions {
+    text-align: center;
+    color: var(--text-color-grey);
+    padding: 20px 0;
 }
 
 @media screen and (max-width: 800px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
 
-}
+    .sessions-container {
+        padding: 15px;
+    }
 
-@media screen and (max-width: 600px) {
+    .session-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .status-badge {
+        align-self: flex-start;
+    }
 }

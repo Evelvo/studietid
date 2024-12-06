@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" href="../../../static/css/variables.css">
+    <link rel="stylesheet" href="../../../static/css/standard.css">
+    <link rel="stylesheet" href="../../../static/css/dashboard/users_list.css">
+    <%- include('../../font') %>
+</head>
+<body>
+    <h2 class="dashboard_title">Alle brukere</h2>
+    <div style="height: 30px;"></div>
+    
+    <div class="users-list-container">
+        <div class="search-container">
+            <input type="text" id="userSearch" class="search-input" placeholder="Søk etter brukere...">
+            <div class="search-icon">
+                <%- include('../../../static/rsc/icons/search') %>
+            </div>
+        </div>
+
+        <% if (users && users.length > 0) { %>
+            <div class="users-list" id="usersList">
+                <% users.forEach(function(user) { %>
+                    <div class="user-item">
+                        <div class="user-info">
+                            <h3 class="user-name"><%= user.name %></h3>
+                            <p class="user-email"><%= user.email %></p>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        <% } else { %>
+            <p class="no-users normal_text">Ingen brukere registrert.</p>
+        <% } %>
+    </div>
+
+    <script>
+        document.getElementById('userSearch').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const userItems = document.querySelectorAll('.user-item');
+            
+            userItems.forEach(item => {
+                const name = item.querySelector('.user-name').textContent.toLowerCase();
+                const email = item.querySelector('.user-email').textContent.toLowerCase();
+                
+                if (name.includes(searchTerm) || email.includes(searchTerm)) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

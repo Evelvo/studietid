@@ -52,13 +52,71 @@ function findSidebarVersion(userType) {
 router.get('/', isAuthenticated, async (req, res) => {
     try {
         const user = await User.findById(req.session.userId);
-        res.render("dashboard/main_dash.html", {
-            windowTitle: "Dashbord - Studietid",
-            userType: user.type,
-            sidebar: findSidebarVersion(user.type),
-            main: "home_dyna"
+        if (user.type == "admin") {
+            const studySessions = await Studietid.find()
+                .populate('fag_id')
+                .populate('rom_id')
+                .populate({
+                    path: 'user_id',
+                    model: 'User',
+                    select: 'name email'
+                })
+                .sort('-registreringsdato');
 
-        })
+            const sessionsByStatus = {
+                aktiv: studySessions.filter(session => session.status === 'aktiv'),
+                godkjent: studySessions.filter(session => session.status === 'godkjent'),
+                avvist: studySessions.filter(session => session.status === 'avvist')
+            };
+
+            res.render("dashboard/main_dash.html", {
+                windowTitle: "Dashbord - Studietid",
+                userType: user.type,
+                sidebar: findSidebarVersion(user.type),
+                main: "approve_studietid_dyna",
+                studySessions: studySessions,
+                sessionsByStatus: sessionsByStatus
+            });
+        } else {
+            const studySessions = await Studietid.find({ user_id: req.session.userId })
+                .populate('fag_id')
+                .populate('rom_id')
+                .sort('-registreringsdato');
+
+            let totalHours = 0;
+            let approvedSessions = 0;
+            let pendingSessions = 0;
+
+            studySessions.forEach(session => {
+                if (session.status === 'godkjent' && session.ferdigdato) {
+                    const hours = (new Date(session.ferdigdato) - new Date(session.registreringsdato)) / (1000 * 60 * 60);
+                    totalHours += Math.round(hours * 10) / 10;
+                    approvedSessions++;
+                } else if (session.status === 'aktiv') {
+                    pendingSessions++;
+                }
+            });
+
+            res.render("dashboard/main_dash.html", {
+                windowTitle: "Dashbord - Studietid",
+                userType: user.type,
+                sidebar: findSidebarVersion(user.type),
+                main: "home_dyna",
+                studySessions,
+                totalHours,
+                approvedSessions,
+                pendingSessions,
+                formatDate: (date) => {
+                    return new Date(date).toLocaleString('no-NO', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                }
+            });
+        }
     } catch (error) {
         console.error(error);
         return res.render('alert_page.html', { 
@@ -262,6 +320,119 @@ router.delete('/delete-subject/:id', isAuthenticated, async (req, res) => {
     } catch (error) {
         console.error(error);
         res.json({ success: false, message: "Serverfeil ved sletting av fag" });
+    }
+});
+
+
+router.post('/update-study-session', isAuthenticated, async (req, res) => {
+    try {
+        const user = await User.findById(req.session.userId);
+        if (user.type !== "admin") {
+            return res.json({ success: false, message: "Unauthorized" });
+        }
+
+        const { sessionId, status, comment } = req.body;
+        
+
+        const studietid = await Studietid.findById(sessionId);
+        if (!studietid) {
+            return res.json({ success: false, message: "Studieøkt ikke funnet" });
+        }
+
+        if (studietid.status !== 'aktiv') {
+            return res.json({ 
+                success: false, 
+                message: "Kan ikke endre status på en allerede godkjent eller avvist studieøkt" 
+            });
+        }
+
+        const updates = {
+            status: status,
+            kommentar: comment && comment !== '' ? comment : 'none',
+            ferdigdato: new Date()
+        };
+
+        const updatedSession = await Studietid.findByIdAndUpdate(
+            sessionId,
+            updates,
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedSession) {
+            return res.json({ 
+                success: false, 
+                message: "Kunne ikke oppdatere studieøkten" 
+            });
+        }
+
+        res.json({ 
+            success: true,
+            message: status === 'godkjent' ? 'Studieøkt godkjent' : 'Studieøkt avvist',
+            session: updatedSession 
+        });
+
+    } catch (error) {
+        console.error('Error in update-study-session:', error);
+        res.json({ 
+            success: false, 
+            message: "En feil oppstod ved oppdatering av studieøkten" 
+        });
+    }
+});
+
+router.get('/get-study-session/:id', isAuthenticated, async (req, res) => {
+    try {
+        const user = await User.findById(req.session.userId);
+        if (user.type !== "admin") {
+            return res.json({ success: false, message: "Unauthorized" });
+        }
+
+        const session = await Studietid.findById(req.params.id)
+            .populate('fag_id')
+            .populate('rom_id')
+            .populate({
+                path: 'user_id',
+                model: 'User',
+                select: 'name email'
+            });
+
+        if (!session) {
+            return res.json({ success: false, message: "Studieøkt ikke funnet" });
+        }
+
+        res.json({ success: true, session });
+    } catch (error) {
+        console.error('Error in get-study-session:', error);
+        res.json({ 
+            success: false, 
+            message: "En feil oppstod ved henting av studieøkten" 
+        });
+    }
+});
+
+
+router.get('/users', isAuthenticated, async (req, res) => {
+    try {
+        const user = await User.findById(req.session.userId);
+        if (user.type != "admin") {
+            res.redirect("/dashboard");
+        } else {
+        const users = await User.find(); // Hent alle brukere
+            res.render("dashboard/main_dash.html", {
+                windowTitle: "Alle brukere - Studietid",
+                userType: user.type,
+                sidebar: findSidebarVersion(user.type),
+                main: "users_list",
+                users
+            });
+        }
+    } catch (error) {
+        console.error(error);
+        res.render('alert_page.html', { 
+            title: "Server error", 
+            msg: "Kunne ikke hente brukere.", 
+            comefrom: "/dashboard" 
+        });
     }
 });
 
@@ -508,6 +679,5 @@ router.post('/settings_update_password', isAuthenticated, async (req, res) => {
         });
     }
 });
-
 
 module.exports = router;
